@@ -7,8 +7,8 @@ import java.util.concurrent.*;
 
 public class Main {
     public static int NUM_THREADS = 1;
-    public static int START_YEAR = 2006;
-    public static int END_YEAR = 2016;
+    public static int START_YEAR = 1996;
+    public static int END_YEAR = 2018;
 
     private static int tot = 0;
 
@@ -17,6 +17,11 @@ public class Main {
         byte b = -1;
         b= (byte) ((b & 0xff) >>> (byte) 4);
         System.out.println((byte) (Math.pow(2, 8) - 1));
+        try {
+            download(args);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void download(String[] args) throws IOException {
@@ -25,7 +30,8 @@ public class Main {
 
         ArrayList<Future<ArrayList<ArrayList<String>>>> all_rows = new ArrayList<>();
         final List<String> symbols = NetworkUtil.getAllSymbols();
-        for (final String symbol : new String[]{"SRTRANSFIN"}) {
+//        System.out.println("Symbols:"+symbols);
+        for (final String symbol : symbols) {
             System.out.println(symbol);
             Future<ArrayList<ArrayList<String>>> rows = executorService.submit(() -> {
                 ArrayList<ArrayList<String>> all_results = new ArrayList<>();
@@ -48,7 +54,7 @@ public class Main {
                 }
                 tot++;
                 System.out.println(tot * 100.0 / symbols.size());
-                PrintWriter printWriter = new PrintWriter(new File(symbol + ".csv"));
+                PrintWriter printWriter = new PrintWriter(new File("DB/"+symbol + ".csv"));
                 for (ArrayList<String> fields : all_results) {
                     printWriter.println(String.join(",", fields));
                 }

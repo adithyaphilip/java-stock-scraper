@@ -18,7 +18,7 @@ import java.util.Scanner;
 
 public class NetworkUtil {
     private static String URL_FMT = "https://www.nseindia.com/products/dynaContent/common/productsSymbolMapping.jsp?symbol=%s"
-            + "&segmentLink=3&symbolCount=2&series=ALL&dateRange=+&fromDate=%s&toDate=%s&dataType=PRICEVOLUMEDELIVERABLE";
+            + "&segmentLink=3&symbolCount=1&series=ALL&dateRange=+&fromDate=%s&toDate=%s&dataType=PRICEVOLUMEDELIVERABLE";
 
     private static String FIRST_DATE = "01-01-%d";
     private static String LAST_DATE = "31-12-%d";
@@ -30,6 +30,7 @@ public class NetworkUtil {
 
         URL url = new URL(urlString);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setRequestProperty("Referer","https://www.nseindia.com/products/content/equities/equities/eq_security.htm");
         Scanner sc = new Scanner(urlConnection.getInputStream());
         String result = "";
         while (sc.hasNextLine()) {
